@@ -1,3 +1,5 @@
+import os
+os.system('pip install numpy scipy')
 import streamlit as st
 import numpy as np
 from scipy.interpolate import interp2d
