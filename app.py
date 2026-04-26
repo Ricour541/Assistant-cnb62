@@ -1,6 +1,6 @@
 import streamlit as st
 st.title("Mon Assistant Nav")
-st.write("La Force du vent est de 15 noeuds")
+st.write("La Force du vent est de 20 noeuds")
 # Configuration
 st.set_page_config(page_title="Routage CNB 62", page_icon="⛵")
 
