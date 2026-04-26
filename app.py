@@ -1,59 +1,22 @@
 import streamlit as st
-st.title("Mon Assistant Nav")
-st.write("La Force du vent est de 20 noeuds")
-# Configuration
-st.set_page_config(page_title="Routage CNB 62", page_icon="⛵")
 
-st.title("⚓ Assistant de Navigation CNB 62")
+st.title("Assistant de Navigation CNB62")
 
-# --- PANNEAU LATÉRAL (Réglages) ---
-st.sidebar.header("Paramètres du Trajet")
-distance = st.sidebar.number_input("Distance à parcourir (milles)", min_value=1.0, value=50.0)
-allure = st.sidebar.selectbox("Allure du bateau", 
-    ["Près (45°)", "Bon plein (60°)", "Travers (90°)", "Largue (120°)", "Vent arrière (150°+)"])
+st.header("⚙️ Paramètres de navigation")
 
-# --- INTERFACE PRINCIPALE ---
-col1, col2 = st.columns(2)
-with col1:
-    vent = st.slider("Force du vent (nds)", 0, 50, 15)
+# Zones de saisie pour vos chiffres
+dist = st.number_input("Distance à parcourir (milles)", value=10.0)
+vit = st.number_input("Vitesse surface (nœuds)", value=5.0)
+
+st.divider() # Une jolie ligne de séparation
+
+# Le calcul automatique
+if vit > 0:
+    temps = dist / vit
+    # Affichage du résultat en gros
+    st.success(f"⏱️ Temps estimé : {temps:.2f} heures")
     
-with col2:
-    mer = st.slider("Hauteur mer (m)", 0.0, 6.0, 1.0, 0.5)
-
-# --- CALCUL DES PERFORMANCES (Polaires simplifiées) ---
-# Multiplicateur selon l'allure
-coeffs_allure = {
-    "Près (45°)": 0.35,
-    "Bon plein (60°)": 0.48,
-    "Travers (90°)": 0.55,
-    "Largue (120°)": 0.52,
-    "Vent arrière (150°+)": 0.40
-}
-
-vitesse_theo = vent * coeffs_allure[allure]
-
-# Impact de la mer (freinage)
-frein_mer = mer * 0.4
-vitesse_reelle = max(1.5, vitesse_theo - frein_mer)
-if vitesse_reelle > 12.5: vitesse_reelle = 12.5 # Vitesse max théorique
-
-# Calcul du temps
-temps_decimal = distance / vitesse_reelle
-heures = int(temps_decimal)
-minutes = int((temps_decimal - heures) * 60)
-
-# --- AFFICHAGE DU ROUTAGE ---
-st.divider()
-
-c1, c2, c3 = st.columns(3)
-c1.metric("Vitesse Surface", f"{vitesse_reelle:.1f} kts")
-c2.metric("Distance", f"{distance} nm")
-c3.metric("Temps estimé", f"{heures}h {minutes}min")
-
-# --- CONSEILS DE SÉCURITÉ ---
-if vent > 30 or mer > 3.5:
-    st.error("⚠️ ALERTE : Conditions musclées. Réduire la toile (2 ris minimum).")
-elif vent < 8:
-    st.info("ℹ️ Vent faible : Appui moteur probable pour maintenir la moyenne.")
+    # Un petit bonus pour le vent (votre texte de tout à l'heure)
+    st.info("Note : N'oubliez pas de vérifier la force du vent avant de partir.")
 else:
-    st.success("✅ Bonne navigation prévue !")
+    st.error("La vitesse doit être supérieure à 0 pour calculer le temps.")
