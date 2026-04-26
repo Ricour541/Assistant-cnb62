@@ -1,22 +1,38 @@
 import streamlit as st
+from datetime import datetime, time
 
-st.title("Assistant de Navigation CNB62")
+st.title("🛰️ Routeur Stratégique CNB62")
 
-st.header("⚙️ Paramètres de navigation")
+# --- SECTION 1 : TEMPS ---
+st.header("📅 Planification du départ")
+col1, col2 = st.columns(2)
+with col1:
+    date_depart = st.date_input("Date de départ", datetime.now())
+with col2:
+    heure_depart = st.time_input("Heure de départ (UTC)", time(10, 0))
 
-# Zones de saisie pour vos chiffres
-dist = st.number_input("Distance à parcourir (milles)", value=10.0)
-vit = st.number_input("Vitesse surface (nœuds)", value=5.0)
+# --- SECTION 2 : GÉOGRAPHIE ---
+st.header("📍 Itinéraire")
+col3, col4 = st.columns(2)
+with col3:
+    st.subheader("Départ")
+    lat_dep = st.number_input("Latitude Départ", value=50.521, format="%.3f")
+    lon_dep = st.number_input("Longitude Départ", value=1.583, format="%.3f")
+with col4:
+    st.subheader("Arrivée")
+    lat_arr = st.number_input("Latitude Arrivée", value=51.125, format="%.3f")
+    lon_arr = st.number_input("Longitude Arrivée", value=1.333, format="%.3f")
 
-st.divider() # Une jolie ligne de séparation
+# --- SECTION 3 : VOS SOUHAITS ---
+st.header("⛵ Vos souhaits de navigation")
+confort = st.select_slider(
+    "Niveau de confort souhaité",
+    options=["Performance (Direct)", "Équilibré", "Confort (Éviter la mer forte)"]
+)
 
-# Le calcul automatique
-if vit > 0:
-    temps = dist / vit
-    # Affichage du résultat en gros
-    st.success(f"⏱️ Temps estimé : {temps:.2f} heures")
-    
-    # Un petit bonus pour le vent (votre texte de tout à l'heure)
-    st.info("Note : N'oubliez pas de vérifier la force du vent avant de partir.")
-else:
-    st.error("La vitesse doit être supérieure à 0 pour calculer le temps.")
+vent_max = st.slider("Force du vent maximum acceptée (nœuds)", 10, 45, 25)
+
+# Bouton pour lancer le calcul (on créera la logique après)
+if st.button("Lancer l'analyse météo et le routage"):
+    st.info(f"Analyse prévue pour le {date_depart} à {heure_depart}...")
+    st.warning("Étape suivante : Connexion aux serveurs météo (API).")
