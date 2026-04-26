@@ -16,6 +16,7 @@ allure = st.sidebar.selectbox("Allure du bateau",
 col1, col2 = st.columns(2)
 with col1:
     vent = st.slider("Force du vent (nds)", 0, 50, 15)
+    
 with col2:
     mer = st.slider("Hauteur mer (m)", 0.0, 6.0, 1.0, 0.5)
 
