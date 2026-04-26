@@ -43,7 +43,7 @@ heures = int(temps_decimal)
 minutes = int((temps_decimal - heures) * 60)
 
 # --- AFFICHAGE DU ROUTAGE ---
-st.divider()
+st.divider() entre le vent et la mer
 c1, c2, c3 = st.columns(3)
 c1.metric("Vitesse Surface", f"{vitesse_reelle:.1f} kts")
 c2.metric("Distance", f"{distance} nm")
